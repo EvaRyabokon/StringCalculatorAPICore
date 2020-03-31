@@ -8,13 +8,23 @@ namespace StringCalculator.Controllers
     [ApiController]
     public class CalculatorController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get(string input)
-        {
-            var calculator = new Calculator();
-            var result = calculator.CalculateString(input.Trim().Replace(" ", "+"));
-            return new string[] { result.ToString() };
-        }
+        Calculator calculator = new Calculator();
+        ExpressionValidator validator = new ExpressionValidator();
 
+        [HttpGet]
+        public JsonResult Get(string input)
+        {
+            var validationResult = validator.Validate(input);
+            if (!validationResult.IsSuccessful)
+            {
+                return new JsonResult(new Dictionary<string, string>() { { "error", validationResult.Error } })
+                { 
+                    StatusCode = 400
+                };
+            }
+
+            var result = calculator.CalculateString(input);
+            return new JsonResult(new Dictionary<string, string>() { { "result", result.ToString() } });
+        }
     }
 }

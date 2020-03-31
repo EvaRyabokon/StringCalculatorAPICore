@@ -6,7 +6,7 @@ namespace StringCalculator
 {
     public class Calculator
     {
-        private char[] availableOperations = new char[] { '-', '+' };
+        public static char[] AvailableOperations = new char[] { '-', '+' };
 
         private struct NumbersAndOperations
         {
@@ -25,7 +25,7 @@ namespace StringCalculator
             var numbers = new List<int>();
             var operations = new List<char>();
 
-            numbers = input.Split(availableOperations, StringSplitOptions.None).Select(Int32.Parse).ToList();
+            numbers = input.Split(AvailableOperations, StringSplitOptions.None).Select(Int32.Parse).ToList();
 
             foreach (var item in input)
             {
